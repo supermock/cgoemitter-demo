@@ -78,3 +78,15 @@ void start_work(char* id) {
   pthread_t tid;
   pthread_create(&tid, NULL, worker_scope, (void*)id);
 }
+
+void unknown() {
+  int value = 10;
+
+  cgoemitter_args_t cgoemitter_args = cgoemitter_new_args(1);
+
+	void* value_arg = cgoemitter_args_halloc_arg(&value, sizeof(int));
+  check_err_cgoemitter_args_halloc_arg(value_arg);
+  check_err_cgoemitter_args_add_arg(cgoemitter_args_add_arg(&cgoemitter_args, &value_arg));
+
+  emit("unknown", &cgoemitter_args);
+}

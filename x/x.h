@@ -27,5 +27,6 @@ struct SysInfo {
 void say(char* text);
 void sys_info();
 void start_work(char* id);
+void unknown();
 
 #endif

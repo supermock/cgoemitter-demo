@@ -22,6 +22,8 @@ func Run() {
 	C.free(unsafe.Pointer(message))
 
 	C.sys_info()
+
+	C.unknown()
 }
 
 //StartWork | Starts a new job (thread)
