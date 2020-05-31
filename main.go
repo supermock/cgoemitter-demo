@@ -71,19 +71,14 @@ func main() {
 	cgoemitter.On("raw-sys-info", cgoemitter.NewListener(func(args cgoemitter.Arguments) {
 		utsname := (*C.struct_utsname)(args.Arg(0))
 
-		fmt.Printf("Receveid raw system information: %+v\n", struct{
-			SysName string
-			NodeName string
-			Release string
-			Version string
-			Machine string
-		}{
+		fmt.Printf("Receveid raw system information: %+v\n", SysInfo{
 			SysName: utsname.SysName(),
 			NodeName: utsname.NodeName(),
 			Release: utsname.Release(),
 			Version: utsname.Version(),
 			Machine: utsname.Machine(),
 		})
+
 		wg.Done()
 	}))
 
