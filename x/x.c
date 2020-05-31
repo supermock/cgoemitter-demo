@@ -41,6 +41,19 @@ void sys_info() {
   emit("sys-info", &cgoemitter_args);
 }
 
+void raw_sys_info() {
+  struct utsname uname_info;
+  uname(&uname_info);
+
+  cgoemitter_args_t cgoemitter_args = cgoemitter_new_args(1);
+
+  void *sys_info_arg = cgoemitter_args_halloc_arg(&uname_info, sizeof(struct utsname));
+  check_err_cgoemitter_args_halloc_arg(sys_info_arg);
+  check_err_cgoemitter_args_add_arg(cgoemitter_args_add_arg(&cgoemitter_args, &sys_info_arg));
+
+  emit("raw-sys-info", &cgoemitter_args);
+}
+
 void* worker_scope(void* vargp) {
   char* id = (char*)vargp;
   int count = 0;

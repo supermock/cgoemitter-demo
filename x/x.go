@@ -22,6 +22,7 @@ func Run() {
 	C.free(unsafe.Pointer(message))
 
 	C.sys_info()
+	C.raw_sys_info()
 
 	C.unknown()
 }

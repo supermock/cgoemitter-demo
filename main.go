@@ -22,9 +22,29 @@ type SysInfo struct {
 	Machine  string
 }
 
+func (utsname *C.struct_utsname) SysName() string {
+	return C.GoString(&utsname.sysname[0])
+}
+
+func (utsname *C.struct_utsname) NodeName() string {
+	return C.GoString(&utsname.nodename[0])
+}
+
+func (utsname *C.struct_utsname) Release() string {
+	return C.GoString(&utsname.release[0])
+}
+
+func (utsname *C.struct_utsname) Version() string {
+	return C.GoString(&utsname.version[0])
+}
+
+func (utsname *C.struct_utsname) Machine() string {
+	return C.GoString(&utsname.machine[0])
+}
+
 func main() {
 	var wg sync.WaitGroup
-	wg.Add(5)
+	wg.Add(6)
 
 	//For more information look at CGOEmitter (golang package) -> README.md
 	cgoemitter.On("cgoemitter-warnings", cgoemitter.NewListener(func(args cgoemitter.Arguments) {
@@ -45,6 +65,25 @@ func main() {
 		}
 
 		fmt.Printf("Receveid system information: %+v\n", sysInfo)
+		wg.Done()
+	}))
+
+	cgoemitter.On("raw-sys-info", cgoemitter.NewListener(func(args cgoemitter.Arguments) {
+		utsname := (*C.struct_utsname)(args.Arg(0))
+
+		fmt.Printf("Receveid raw system information: %+v\n", struct{
+			SysName string
+			NodeName string
+			Release string
+			Version string
+			Machine string
+		}{
+			SysName: utsname.SysName(),
+			NodeName: utsname.NodeName(),
+			Release: utsname.Release(),
+			Version: utsname.Version(),
+			Machine: utsname.Machine(),
+		})
 		wg.Done()
 	}))
 
